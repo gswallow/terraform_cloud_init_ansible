@@ -12,7 +12,8 @@ The module injects four environment variables into the user-data:
 * HOSTGROUP places the EC2 instance into an Ansible host group (like a Chef role)
 * REPO is the URL of your Ansible playbooks Git repository
 
-All EC2 instances will end up in two host groups: `$ENV` and `$HOSTGROUP`.
+All EC2 instances will end up in two host groups -- `$ENV` and `$HOSTGROUP` -- if you use the
+hostgroup.py inventory script, from the examples folder, in your ansible repo's inventory scripts.
 
 # Setup
 
