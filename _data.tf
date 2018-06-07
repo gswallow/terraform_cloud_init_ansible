@@ -1,5 +1,6 @@
 provider "aws" {}
 provider "tls" {}
+provider "local" {}
 
 data "template_file" "redhat" {
   template = "${file("${path.module}/files/redhat.txt")}"
