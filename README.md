@@ -69,7 +69,7 @@ resource "aws_instance" "mine" {
   ami           = "${module.redhat_ami.id}"
   user_data     = "${module.cloud_init_ansible.redhat_user_data}"
   tags {
-    Environment = "${terraform.workspace}"
+    Environment = "${var.ENV}"
   }
 }
 ```
@@ -85,7 +85,7 @@ resource "aws_instance" "mine" {
   iam_instance_profile = "${module.cloud_init_ansible.iam_instance_profile_id}"
   ...
   tags {
-    Environment        = "${terraform.workspace}"
+    Environment        = "${var.ENV}"
   }
 }
 ```
