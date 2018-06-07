@@ -1,9 +1,3 @@
-data "aws_caller_identity" "current" {}
-
-data "aws_iam_policy" "ansible_ssm_parameter" {
-  arn = "${format("arn:aws:iam::%s:policy/ReadAnsibleSSMParameters", data.aws_caller_identity.current.account_id)}"
-}
-
 # The IAM instance profile
 resource "aws_iam_instance_profile" "current" {
   name_prefix = "ansible_node"
@@ -38,8 +32,8 @@ EOF
 # policy, allowing instances that use sts:AssumeRole to
 # use permission herein
 resource "aws_iam_role_policy_attachment" "ansible_ssm_parameter" {
-    role       = "${aws_iam_role.current.name}"
-    policy_arn = "${data.aws_iam_policy.ansible_ssm_parameter.arn}"
+  role       = "${aws_iam_role.current.name}"
+  policy_arn = "${aws_iam_policy.read_ansible_ssm_parameters.arn}"
 }
 
 output "iam_instance_profile_id" {
