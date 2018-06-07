@@ -53,6 +53,11 @@ Optionally, you can edit the \_bootstrap.tf file and change some of the values:
 | CREATE_ANSIBLE_GIT_KEY | Creates an SSH key for use with an Ansible git repository               | false       |
 | ANSIBLE_GIT_KEY        | SSH key file name                                                       | ansible_rsa |
 
+## Example: creating the SSM parameter
+
+The \_bootstrap.tf and \_varaibles.tf files in the examples folder actually create a private SSH key and store them
+in an AWS SSM parameter.
+
 # Using Outputs
 
 There are two user-data outputs, `debian` and `redhat`:
