@@ -103,3 +103,12 @@ resource "aws_iam_policy_attachment" "ssm_parameters_attach" {
   policy_arn = "${aws_iam_policy.read_ssm_parameters.arn}"
 }
 ```
+
+# TODO
+
+I use Red Hat Enterprise Linux at my current job.  Because you can't install any packages, or 
+pretty much do anything with RHEL before registering your license, we have a Packer template 
+that takes care of things like installing Python, pip, Ansible, and the AWS CLI.  Those items
+might need to be addressed in the user-data script with yum localinstall or something.
+
+The debian (ok, ubuntu) template needs rehashed.
