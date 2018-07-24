@@ -4,7 +4,7 @@
 ENV=${ENV}
 ORG=${ORG}
 HOSTGROUP=${HOSTGROUP}
-REPO=${REPO}
+ANSIBLE_PLAYBOOKS_REPO=${ANSIBLE_PLAYBOOKS_REPO}
 
 set -o errexit -o errtrace -o pipefail
 trap signal_and_exit ERR
@@ -60,7 +60,7 @@ Host *
   IdentityFile /root/.ssh/ansible_rsa
 EOF
 
-git clone $${REPO} /etc/ansible-local && rm -f /root/.ssh/config
+git clone $${ANSIBLE_PLAYBOOKS_REPO} /etc/ansible-local && rm -f /root/.ssh/config
  
 cd /etc/ansible-local
 ANSIBLE_CONFIG=/etc/ansible-local/ansible.cfg HOSTGROUP=$${HOSTGROUP} ENV=$${ENV} ansible-playbook \

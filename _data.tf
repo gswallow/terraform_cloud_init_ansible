@@ -1,6 +1,7 @@
 provider "aws" {}
-provider "tls" {}
 provider "local" {}
+
+data "aws_caller_identity" "current" {}
 
 data "template_file" "redhat" {
   template = "${file("${path.module}/files/redhat.txt")}"
@@ -8,7 +9,7 @@ data "template_file" "redhat" {
     ORG = "${var.ORG}"
     ENV = "${var.ENV}"
     HOSTGROUP= "${var.HOSTGROUP}"
-    REPO = "${var.REPO}"
+    ANSIBLE_PLAYBOOKS_REPO = "${var.ANSIBLE_PLAYBOOKS_REPO}"
   }
 }
 
@@ -18,7 +19,7 @@ data "template_file" "debian" {
     ORG = "${var.ORG}"
     ENV = "${var.ENV}"
     HOSTGROUP = "${var.HOSTGROUP}"
-    REPO = "${var.REPO}"
+    ANSIBLE_PLAYBOOKS_REPO = "${var.ANSIBLE_PLAYBOOKS_REPO}"
   }
 }
 

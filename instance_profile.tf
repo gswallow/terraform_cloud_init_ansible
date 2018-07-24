@@ -1,12 +1,12 @@
 # The IAM instance profile
-resource "aws_iam_instance_profile" "current" {
+resource "aws_iam_instance_profile" "ansible_node" {
   name_prefix = "ansible_node"
-  role = "${aws_iam_role.current.name}"
+  role = "${aws_iam_role.ansible_node.name}"
 }
 
 # Which gets bound to the IAM role, with a trust
 # relationship to the ec2.amazonaws.com service
-resource "aws_iam_role" "current" {
+resource "aws_iam_role" "ansible_node" {
   name_prefix = "ansible_node"
   path = "/"
 
@@ -21,7 +21,7 @@ resource "aws_iam_role" "current" {
                "Service": "ec2.amazonaws.com"
             },
             "Effect": "Allow",
-            "Sid": "SSMParameterAccess"
+            "Sid": "AssumeRole"
         }
     ]
 }
@@ -31,19 +31,31 @@ EOF
 # The policy statements get attached to the IAM role's
 # policy, allowing instances that use sts:AssumeRole to
 # use permission herein
-resource "aws_iam_role_policy_attachment" "ansible_ssm_parameter" {
-  role       = "${aws_iam_role.current.name}"
-  policy_arn = "${aws_iam_policy.read_ansible_ssm_parameters.arn}"
+resource "aws_iam_role_policy_attachment" "get_ssm_parameter" {
+  role       = "${aws_iam_role.ansible_node.name}"
+  policy_arn = "${format("arn:aws:iam::%s:policy/GetAnsibleGitKeySSMParameter", data.aws_caller_identity.current.account_id)}"
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch" {
+  count = "${var.ENABLE_AWS_MANAGEMENT_AGENTS == "true" ? 1 : 0 }"
+  role = "${aws_iam_role.ansible_node.name}"
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_ec2_role" {
+  count = "${var.ENABLE_AWS_MANAGEMENT_AGENTS == "true" ? 1 : 0 }"
+  role = "${aws_iam_role.ansible_node.name}"
+  policy_arn = "${format("arn:aws:iam::%s:policy/RestrictedEC2RoleforSSM", data.aws_caller_identity.current.account_id)}"
 }
 
 output "iam_instance_profile_id" {
-  value = "${aws_iam_instance_profile.current.id}"
+  value = "${aws_iam_instance_profile.ansible_node.id}"
 }
 
 output "iam_role_arn" {
-  value = "${aws_iam_role.current.arn}"
+  value = "${aws_iam_role.ansible_node.arn}"
 }
 
 output "iam_role_name" {
-  value = "${aws_iam_role.current.name}"
+  value = "${aws_iam_role.ansible_node.name}"
 }

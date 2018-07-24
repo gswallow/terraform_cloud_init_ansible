@@ -1,8 +1,9 @@
 variable "ORG" { }
 variable "ENV" { }
-variable "HOSTGROUP" { }
-variable "REPO" { }
+variable "HOSTGROUP" { default = "default" }
+variable "ANSIBLE_PLAYBOOKS_REPO" { }
 
-variable "CREATE_SSM_PARAMETERS" { default = "false" }
-variable "CREATE_ANSIBLE_GIT_KEY" { default = "false" }
+variable "STORE_ANSIBLE_GIT_KEY" { default = "false" }
 variable "ANSIBLE_GIT_KEY" { default = "~/.ssh/ansible_rsa" }
+variable "ENABLE_AWS_MANAGEMENT_AGENTS" { default = "true" }
+variable "CREATE_AWS_MANAGEMENT_POLICY" { default = "false" }
