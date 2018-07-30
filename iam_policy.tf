@@ -15,6 +15,22 @@ resource "aws_iam_policy" "get_ssm_parameter" {
 EOF
 }
 
+resource "aws_iam_policy" "autoscaling_set_instance_health" {
+  name = "EC2AutoscalingSetInstanceHealth"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [ "autoscaling:SetInstanceHealth" ],
+      "Resource": [ "*" ]
+    }
+  ]
+}
+EOF
+}
+
 # Amazon's "AmazonEC2RoleforSSM" manged IAM role is too loose.
 # https://docs.aws.amazon.com/systems-manager/latest/userguide/ssm-agent-minimum-s3-permissions.html
 # This should only be enabled once.

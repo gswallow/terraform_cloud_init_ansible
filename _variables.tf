@@ -2,6 +2,7 @@ variable "ORG" { }
 variable "ENV" { }
 variable "HOSTGROUP" { default = "default" }
 variable "ANSIBLE_PLAYBOOKS_REPO" { }
+variable "ANSIBLE_SEED_VARS" { default = "" }
 
 variable "STORE_ANSIBLE_GIT_KEY" { default = "false" }
 variable "ANSIBLE_GIT_KEY" { default = "~/.ssh/ansible_rsa" }

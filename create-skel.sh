@@ -4,12 +4,19 @@ if [ ! -f "_bootstrap.tf" ]; then
 variable "HOSTGROUP" { default = "default" }
 variable "ANSIBLE_PLAYBOOKS_REPO" {}
 
+# Variables for the initial ansible-playbook run go here
+locals {
+  seed = <<EOV
+EOV
+}
+
 module "cloud_init_ansible" {
   source = "../../modules/cloud_init_ansible"
   ENV = "${var.ENV}"
   ORG = "${var.ORG}"
   HOSTGROUP = "${var.HOSTGROUP}"
   ANSIBLE_PLAYBOOKS_REPO = "${var.ANSIBLE_PLAYBOOKS_REPO}"
+  ANSIBLE_SEED_VARS = "${local.seed}"
 
   STORE_ANSIBLE_GIT_KEY = "false"
   ANSIBLE_GIT_KEY = "~/.ssh/ansible_rsa"

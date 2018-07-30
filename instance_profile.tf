@@ -1,13 +1,13 @@
 # The IAM instance profile
 resource "aws_iam_instance_profile" "ansible_node" {
-  name_prefix = "ansible_node"
+  name_prefix = "ansible"
   role = "${aws_iam_role.ansible_node.name}"
 }
 
 # Which gets bound to the IAM role, with a trust
 # relationship to the ec2.amazonaws.com service
 resource "aws_iam_role" "ansible_node" {
-  name_prefix = "ansible_node"
+  name_prefix = "ansible"
   path = "/"
 
   # The trusted entity in the IAM role
@@ -34,6 +34,11 @@ EOF
 resource "aws_iam_role_policy_attachment" "get_ssm_parameter" {
   role       = "${aws_iam_role.ansible_node.name}"
   policy_arn = "${format("arn:aws:iam::%s:policy/GetAnsibleGitKeySSMParameter", data.aws_caller_identity.current.account_id)}"
+}
+
+resource "aws_iam_role_policy_attachment" "autoscaling_set_instance_health" {
+  role       = "${aws_iam_role.ansible_node.name}"
+  policy_arn = "${format("arn:aws:iam::%s:policy/EC2AutoscalingSetInstanceHealth", data.aws_caller_identity.current.account_id)}"
 }
 
 resource "aws_iam_role_policy_attachment" "cloudwatch" {

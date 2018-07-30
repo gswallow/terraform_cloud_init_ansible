@@ -42,6 +42,10 @@ function signal_and_exit
 
 #-----^ AWS safety guards ^-----
 
+yum -y install epel-release
+yum -y install unzip git python2-pip python-setuptools ansible
+pip install awscli
+
 if [ ! -d /root/.ssh ]; then
   mkdir /root/.ssh
   chown root:root /root/.ssh
@@ -70,6 +74,5 @@ EOF
 ansible-galaxy install -f -r requirements.yml -p roles && rm -f /root/.ssh/config
 
 env `cat /etc/ansible-local/seed.txt` ANSIBLE_CONFIG=/etc/ansible-local/ansible.cfg \
- HOSTGROUP=$${HOSTGROUP} ENV=$${ENV} ansible-playbook \
- /etc/ansible-local/site.yml -i /etc/ansible-local/inventory -c local
-
+ HOSTGROUP=$${HOSTGROUP} ENV=$${ENV} \
+ ansible-playbook /etc/ansible-local/site.yml -i /etc/ansible-local/inventory -c local
