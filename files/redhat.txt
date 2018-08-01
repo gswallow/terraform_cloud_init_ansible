@@ -48,6 +48,8 @@ if [ ! -d /root/.ssh ]; then
   chmod go-rwx /root/.ssh
 fi
 
+pip install boto3
+
 aws ssm get-parameter --region $(my_aws_region) --name /ansible/common/git/private_key \
  --with-decryption --query 'Parameter.Value' --output text > /root/.ssh/ansible_rsa
 
@@ -70,6 +72,4 @@ EOF
 ansible-galaxy install -f -r requirements.yml -p roles && rm -f /root/.ssh/config
 
 env `cat /etc/ansible-local/seed.txt` ANSIBLE_CONFIG=/etc/ansible-local/ansible.cfg \
- HOSTGROUP=$${HOSTGROUP} ENV=$${ENV} ansible-playbook \
- /etc/ansible-local/site.yml -i /etc/ansible-local/inventory -c local
-
+ HOSTGROUP=$${HOSTGROUP} ENV=$${ENV} ansible-playbook /etc/ansible-local/site.yml -c local

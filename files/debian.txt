@@ -38,6 +38,7 @@ function signal_and_exit
 apt-add-repository ppa:ansible/ansible
 apt-get -qq update
 apt-get -yqq install python-pip python-setuptools awscli ansible git
+pip install boto3
 
 cat >> /etc/ansible/ansible.cfg <<EOF
 log_path = /var/log/ansible.log
